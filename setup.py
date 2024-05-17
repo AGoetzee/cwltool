@@ -95,7 +95,29 @@ setup(
     ext_modules=ext_modules,
     # platforms='',  # empty as is conveyed by the classifier below
     # license='',  # empty as is conveyed by the classifier below
-    packages=["cwltool", "cwltool.tests", "cwltool.cwlprov"],
+    packages=[
+        "cwltool",
+        "cwltool.cwlprov",
+        "cwltool.jshint",
+        "cwltool.rdfqueries",
+        "cwltool.schemas",
+        "cwltool.tests",
+        "cwltool.tests.checker_wf",
+        "cwltool.tests.input_deps",
+        "cwltool.tests.loop",
+        "cwltool.tests.override",
+        "cwltool.tests.reloc",
+        "cwltool.tests.subgraph",
+        "cwltool.tests.test_deps_env",
+        "cwltool.tests.test_deps_env.modulefiles",
+        "cwltool.tests.tmp1.tmp2.tmp3",
+        "cwltool.tests.tmp4.alpha",
+        "cwltool.tests.trs",
+        "cwltool.tests.wf",
+        "cwltool.tests.wf.generator",
+        "cwltool.tests.wf.indir",
+        "cwltool.tests.wf.operation",
+    ],
     package_dir={"cwltool.tests": "tests"},
     include_package_data=True,
     install_requires=[
@@ -119,8 +141,8 @@ setup(
     ],
     extras_require={
         "deps": [
-            "galaxy-tool-util>=22.1.2,<23.2,!=23.0.1,!=23.0.2,!=23.0.3,!=23.0.4,!=23.0.5",
-            "galaxy-util <23.2",
+            "galaxy-tool-util>=22.1.2,!=23.0.1,!=23.0.2,!=23.0.3,!=23.0.4,!=23.0.5,<24.1",
+            "galaxy-util <24.1",
         ],
     },
     python_requires=">=3.8, <4",
@@ -129,7 +151,7 @@ setup(
     test_suite="tests",
     tests_require=[
         "bagit >= 1.6.4, < 1.9",
-        "pytest >= 6.2, < 8.1",
+        "pytest >= 6.2, < 8.3",
         "mock >= 2.0.0",
         "pytest-mock >= 1.10.0",
         "pytest-httpserver",

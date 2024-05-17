@@ -23,7 +23,7 @@ run_tests() {
 	mod_loc=$(pip show ${package} |
 		grep ^Location | awk '{print $2}')/${module}
 	"${test_prefix}"bin/py.test "--ignore=${mod_loc}/schemas/" \
-		--pyargs -x ${module} -n auto --dist=loadfile
+		--pyargs -x ${module} -n logical --dist=worksteal
 }
 pipver=23.1  # minimum required version of pip for Python 3.12
 setuptoolsver=67.6.1  # required for Python 3.12
@@ -71,7 +71,7 @@ pushd src/${package}
 pip install -rtest-requirements.txt build
 make dist
 #make test
-cp dist/${package}*tar.gz ../../../testenv3/
+cp dist/${module}*tar.gz ../../../testenv3/
 pip uninstall -y ${package} || true; pip uninstall -y ${package} || true; make install
 popd # ../.. no subdir named ${proj} here, safe for py.testing the installed module
 # shellcheck disable=SC2086
@@ -87,13 +87,13 @@ source bin/activate
 rm -f lib/python-wheels/setuptools* \
 	&& pip install --force-reinstall -U pip==${pipver} \
         && pip install setuptools==${setuptoolsver} wheel
-package_tar=$(find . -name "${package}*tar.gz")
+package_tar=$(find . -name "${module}*tar.gz")
 pip install "-r${DIR}/test-requirements.txt" udocker build
 pip install "${package_tar}${extras}"
 udocker install
 mkdir out
-tar --extract --directory=out -z -f ${package}*.tar.gz
-pushd out/${package}*
+tar --extract --directory=out -z -f ${module}*.tar.gz
+pushd out/${module}*
 make dist
 make test
 pip install "-r${DIR}/mypy-requirements.txt"

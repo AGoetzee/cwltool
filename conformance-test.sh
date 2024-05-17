@@ -13,15 +13,15 @@ venv() {
 }
 
 # Set these variables when running the script, e.g.:
-# VERSION=v1.2 GIT_TARGET=1.2.1_proposed CONTAINER=podman ./conformance_test.sh
+# VERSION=v1.2 GIT_TARGET=main CONTAINER=podman ./conformance_test.sh
 
 # Version of the standard to test against
 # Current options: v1.0, v1.1, v1.2
 VERSION=${VERSION:-"v1.2"}
 
 # Which commit of the standard's repo to use
-# Defaults to the last commit of the 1.2.1_proposed branch
-GIT_TARGET=${GIT_TARGET:-"1.2.1_proposed"}
+# Defaults to the last commit of the main branch
+GIT_TARGET=${GIT_TARGET:-"main"}
 
 # Which container runtime to use
 # Valid options: docker, singularity
@@ -78,7 +78,7 @@ else
 	pip uninstall -y cwltool
 	pip install -r"${SCRIPT_DIRECTORY}/mypy-requirements.txt"
 	CWLTOOL_USE_MYPYC=1 MYPYPATH="${SCRIPT_DIRECTORY}/mypy-stubs" pip install "${SCRIPT_DIRECTORY}" -r"${SCRIPT_DIRECTORY}/requirements.txt"
-	pip install 'cwltest>=2.3' pytest-cov pytest-xdist
+	pip install 'cwltest>=2.5' pytest-cov pytest-xdist>=3.2.0 psutil
 fi
 
 # Set conformance test filename
@@ -121,7 +121,7 @@ if (( "${#exclusions[*]}" > 0 )); then
 fi
 
 # Build command
-TEST_COMMAND="python -m pytest ${CONFORMANCE_TEST} -n auto -rs --junit-xml=${TMP_DIR}/cwltool_conf_${VERSION}_${GIT_TARGET}_${CONTAINER}.xml -o junit_suite_name=cwltool_$(echo "${CWLTOOL_OPTIONS}" | tr "[:blank:]-" _)"
+TEST_COMMAND="python -m pytest ${CONFORMANCE_TEST} -n logical --dist worksteal -rs --junit-xml=${TMP_DIR}/cwltool_conf_${VERSION}_${GIT_TARGET}_${CONTAINER}.xml -o junit_suite_name=cwltool_$(echo "${CWLTOOL_OPTIONS}" | tr "[:blank:]-" _)"
 if [[ -n "${EXCLUDE}" ]] ; then
   TEST_COMMAND="${TEST_COMMAND} --cwl-exclude ${EXCLUDE}"
 fi
