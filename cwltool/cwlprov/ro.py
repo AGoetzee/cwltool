@@ -106,6 +106,7 @@ class ResearchObject:
         return f"ResearchObject <{self.ro_uuid}> in <{self.folder}>"
 
     def _initialize(self) -> None:
+        """Initializes the bagit folder structure."""
         for research_obj_folder in (
             METADATA,
             DATA,
@@ -359,6 +360,7 @@ class ResearchObject:
         return uri
 
     def _ro_annotations(self) -> List[Annotation]:
+        """Appends base RO and provenance annotations to the list of annotations."""
         annotations: List[Annotation] = []
         annotations.append(
             {
@@ -414,6 +416,7 @@ class ResearchObject:
 
     def _authored_by(self) -> Optional[AuthoredBy]:
         authored_by: AuthoredBy = {}
+        """Returns the authoredBy metadata if it was supplied on CLI"""
         if self.orcid:
             authored_by["orcid"] = self.orcid
         if self.full_name:
